@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- ====================================================================== 
+     Mar 17, 2016 3:56:51 PM                                                        
+
+     JUnit    
+     description
+                   
+     syeda                                                                
+     ====================================================================== -->
+<project name="JUnit" default="main">
+    
+	<!-- Creating the property -->
+	<property name="src.dir" location="src"></property>
+	<property name="test.dir" location="test"/>
+	<property name="build.dir" location="bin"/>
+	<property name="build.test.dir" location="bin/tests"/>
+	<property name="test.report.dir" location="testreport"/>
+
+	
+	<!-- Define the classpath-->
+	<path id="junit.classpath">
+		<pathelement path="junit-4.12.jar"/>
+		<pathelement path="hamcrest-core-1.3.jar"/>
+		<pathelement path="${build.dir}"/>
+	</path>
+	
+	<!-- Clean the existing build folders-->
+    <target name="clean">
+    	<delete dir="${build.dir}"></delete>
+    	<delete dir="${build.test.dir}"></delete>
+    	<delete dir="${test.report.dir}"></delete>
+    </target>
+	
+	<!-- Create directories-->
+	<target name="makedir">
+		<mkdir dir="${build.dir}"/>
+		<mkdir dir="${build.test.dir}"/>
+		<mkdir dir="${test.report.dir}"/>
+	</target>
+	
+	<!-- Compile the files-->
+	<target name="compile" depends="clean,makedir">
+		<javac srcdir="${src.dir}" destdir="${build.dir}">
+			<classpath refid="junit.classpath"></classpath>
+		</javac>
+		
+		<javac srcdir="${test.dir}" destdir="${build.test.dir}">
+			<classpath refid="junit.classpath"></classpath>
+		</javac>
+	</target>
+	
+	<!-- Run the Junit tests-->
+	<target name="junit" depends="compile">
+		<junit printsummary="on" fork="true" haltonfailure="yes">
+			<classpath refid="junit.classpath"></classpath>
+			<classpath>
+				<pathelement location="${build.test.dir}"/>
+			</classpath>
+			<formatter type="xml"/>
+			<batchtest todir="${test.report.dir}">
+				<fileset dir="${test.dir}">
+    				<include name="**/*Test*.java"/>
+    			</fileset>
+			</batchtest>
+		</junit>
+	</target>
+	
+	<target name="main" depends="junit" description="description">
+		<echo>This is Sample program for Junit test</echo>
+    </target>
+
+</project>
