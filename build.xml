@@ -49,12 +49,9 @@
 		</javac>
 	</target>
 	
-	<target name="touch">
-		<touch file="${test.report.dir}/.xml"></touch>
-	</target>
-		
+			
 	<!-- Run the Junit tests-->
-	<target name="junit" depends="compile,touch" description="junit test">
+	<target name="junit" depends="compile" description="junit test">
 		<junit printsummary="on" fork="true" haltonfailure="yes">
 			<classpath refid="junit.classpath"></classpath>
 			<classpath>
